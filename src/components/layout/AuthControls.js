@@ -11,14 +11,10 @@ const buttonBase =
 const signInButton = `${buttonBase} border-2 border-brand-200 text-brand-800 hover:border-brand-400 hover:text-brand-900`;
 const signUpButton = `${buttonBase} bg-brand-600 text-white hover:bg-brand-700`;
 
-/**
- * Navbar/drawer auth cluster, driven by the Better Auth session.
- * Logged out → [Sign In] [Sign Up]; logged in → [avatar • name] [Log Out],
- * with the avatar/name linking to /profile.
- * `variant="drawer"` renders full-width stacked buttons for the mobile menu;
- * `onNavigate` lets the Navbar close the drawer when a link is followed.
- */
-export default function AuthControls({ variant = "inline", onNavigate }) {
+export default function AuthControls({
+  variant = "inline",
+  onNavigate,
+}) {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
@@ -45,6 +41,7 @@ export default function AuthControls({ variant = "inline", onNavigate }) {
         >
           Sign In
         </Link>
+
         <Link
           href="/sign-up"
           onClick={onNavigate}
@@ -78,6 +75,7 @@ export default function AuthControls({ variant = "inline", onNavigate }) {
           : "hidden items-center gap-2 sm:flex"
       }
     >
+      {/* User profile: image + name + welcome paragraph */}
       <Link
         href="/profile"
         onClick={onNavigate}
@@ -85,25 +83,27 @@ export default function AuthControls({ variant = "inline", onNavigate }) {
         className={
           isDrawer
             ? "flex items-center gap-3 rounded-2xl px-2 py-2 transition-colors hover:bg-brand-50"
-            : "flex items-center gap-2 rounded-full px-1.5 py-1 transition-colors hover:bg-brand-50"
+            : "flex items-center gap-2 rounded-full px-2 py-1.5 transition-colors hover:bg-brand-50"
         }
       >
-        <UserAvatar name={name} image={user.image} size={36} />
-        <span
-          className={`flex min-w-0 flex-col leading-tight ${
-            isDrawer ? "" : "hidden max-w-36 lg:block"
-          }`}
-        >
-          <span className="truncate text-sm font-semibold text-ink">
+        <UserAvatar
+          name={name}
+          image={user.image}
+          size={36}
+        />
+
+        <span className="flex min-w-0 flex-col items-start leading-tight">
+          <span className="max-w-40 truncate text-sm font-semibold text-ink">
             {name}
           </span>
-          <span className="truncate text-xs text-muted">
-            {isDrawer
-              ? "Welcome back — great to see you again."
-              : "Welcome back!"}
+
+          <span className="mt-1 text-xs text-muted">
+            Welcome back!
           </span>
         </span>
       </Link>
+
+      {/* Sign out */}
       <button
         type="button"
         onClick={handleSignOut}
