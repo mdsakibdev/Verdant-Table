@@ -46,26 +46,30 @@ export default function Navbar() {
           </ul>
         </nav>
 
-        <div className="flex items-center gap-3">
-          <CartBadge className="md:hidden" />
-          <AuthControls />
-          <CartBadge className="hidden md:inline-flex" />
+        <div className="ml-auto flex shrink-0 items-center gap-2 md:ml-0 md:gap-3">
+          <CartBadge />
+          <button
+            type="button"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((value) => !value)}
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-black/10 text-ink transition-colors hover:border-brand-600 hover:text-brand-700 md:hidden"
+          >
+            {open ? (
+              <FaXmark aria-hidden="true" />
+            ) : (
+              <FaBars aria-hidden="true" />
+            )}
+          </button>
+
+          <div className="hidden md:flex md:items-center md:gap-3">
+            <AuthControls />
+            
+          </div>
         </div>
 
-        <button
-          type="button"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((value) => !value)}
-          className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-black/10 text-ink transition-colors hover:border-brand-600 hover:text-brand-700 md:hidden"
-        >
-          {open ? (
-            <FaXmark aria-hidden="true" />
-          ) : (
-            <FaBars aria-hidden="true" />
-          )}
-        </button>
+        
       </div>
 
       <div
@@ -80,10 +84,7 @@ export default function Navbar() {
           className="mx-auto min-h-0 w-full max-w-7xl overflow-hidden px-4 pb-6 pt-3 sm:px-6"
         >
           <div className="mb-4 border-b border-black/5 pb-4">
-            <AuthControls
-              variant="drawer"
-              onNavigate={() => setOpen(false)}
-            />
+            <AuthControls variant="drawer" onNavigate={() => setOpen(false)} />
           </div>
           <ul className="flex flex-col gap-1">
             {navLinks.map((link) => (
